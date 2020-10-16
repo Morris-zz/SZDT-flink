@@ -34,7 +34,7 @@ public class KafkaSender {
             producer.send(record);
             System.out.println("发送数据: " + SZTData.getData(i));
             producer.flush();
-            Thread.sleep(1000);
+            Thread.sleep(10000);
         }
 
     }
