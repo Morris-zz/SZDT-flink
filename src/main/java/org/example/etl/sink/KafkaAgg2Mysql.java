@@ -64,13 +64,17 @@ public class KafkaAgg2Mysql {
 
 
         blinkStreamTableEnv.registerDataStream("zz",map);
+        blinkStreamTableEnv.registerTableSink("station",new Table2MysqlSink(names,types));
         /*Table table = blinkStreamTableEnv.fromDataStream(dataStream,
                 "deal_date,close_date,card_no,deal_value,deal_type,company_name,car_no,station,conn_mark,deal_money,equ_no");*/
 
 
 //        blinkStreamTableEnv.registerTable("kafkaDataStream", table);
-        Table table2 = blinkStreamTableEnv.sqlQuery("SELECT * FROM zz where  deal_value='0'");
-        blinkStreamTableEnv.toRetractStream(table2, Row.class).print("########");
+        Table table2 = blinkStreamTableEnv.sqlQuery("SELECT * FROM zz  ");
+//        blinkStreamTableEnv.toRetractStream(table2, Row.class).print("########");
+//        table2.select("num").window()
+        table2.insertInto("station");
+
         try {
             blinkStreamEnv.execute("1");
         } catch (Exception e) {
